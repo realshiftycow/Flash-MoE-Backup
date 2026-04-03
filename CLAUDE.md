@@ -21,11 +21,21 @@ The entire 209GB model streams from SSD through a custom Metal compute pipeline.
 
 ## Hardware
 
+Primary development machine:
+
 - **Machine**: MacBook Pro, Apple M3 Max
 - **Chip**: 16-core CPU (12P + 4E), 40-core GPU, 16-core ANE
 - **Memory**: 48 GB unified (~400 GB/s bandwidth)
 - **SSD**: 1TB Apple Fabric, **17.5 GB/s sequential read** (measured)
 - **macOS**: 26.2 (Darwin 25.2.0)
+
+Also verified on:
+
+- **Machine**: MacBook Pro, Apple M4 Pro
+- **Chip**: 14-core CPU (10P + 4E), 20-core GPU
+- **Memory**: 24 GB unified (~273 GB/s bandwidth)
+- **macOS**: 15.4 (Darwin 24.4.0)
+- **Result**: **3.50 tok/s** at 4-bit — only ~20% slower despite half the RAM and half the GPU cores. The architecture scales down to 24 GB unified memory without modification.
 
 ## Architecture
 
@@ -95,6 +105,7 @@ metal_infer/
   main.m               # MoE-only benchmark
   Makefile             # Build system
   extract_weights.py   # Creates model_weights.bin from safetensors
+  export_tokenizer.py  # Exports tokenizer.json → tokenizer.bin + vocab.bin (with GPT-2 byte decoding)
   repack_experts_2bit.py  # 4-bit → 2-bit expert requantization
   train_predictor.py   # Expert routing prediction analysis
   model_weights.bin    # Non-expert weights (5.5GB, mmap'd)
@@ -112,6 +123,7 @@ results.tsv            # Experiment log (58 experiments)
 ### Kept
 | Approach | Result | Impact |
 |----------|--------|--------|
+| GPT-2 byte decoding in vocab.bin | Fixes `Ġ`/`Ċ` garbage in output | **Correctness** |
 | FMA dequant kernel | GPU compute -12% | **+12% tok/s** |
 | Trust OS page cache | Deleted Metal LRU → +38% | **Foundational** |
 | GPU combine+norm in CMD3 | Eliminates CPU round-trip | **Pipeline** |

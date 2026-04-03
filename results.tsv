@@ -32,3 +32,4 @@ c222a4f	Qwen3.5-397B-A17B-4bit	397.0	17.0	4.10	0	5.5	discard	GPU LUT dequant ker
 c222a4f	Qwen3.5-397B-A17B-4bit	397.0	17.0	3.33	0	5.5	discard	GPU private buffer compression: blit shared→private before matvec. Isolated -13.5% but 4×7MB blit cost exceeds savings in pipeline.
 c222a4f	Qwen3.5-397B-A17B-4bit	397.0	17.0	3.91	0	5.5	discard	dispatch_io: -70% slower than pread (dispatch_data overhead kills it).
 c222a4f	Qwen3.5-397B-A17B-4bit	397.0	17.0	3.91	0	5.5	discard	Expert file clustering: NVMe doesn't care about scatter distance at 7MB read granularity. 0%.
+3601d41	Qwen3.5-397B-A17B-4bit	397.0	17.0	3.50	4613	5.1	keep	M4 Pro 24GB (half RAM, half GPU cores vs M3 Max 48GB): 3.50 tok/s steady-state, TTFT 4613ms. Trust-OS page cache ~14GB. Only 20% slower despite halved memory bandwidth (~273 vs ~400 GB/s). Confirms architecture scales down to 24GB unified memory.
