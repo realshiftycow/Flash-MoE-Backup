@@ -30,6 +30,8 @@ __pycache__/
 *.npz
 logs/
 *.log
+metal_infer/request_dumps/
+metal_infer/prefill_parity_*.json
 
 # Test binaries and experiment data
 metal_infer/test_lzfse
